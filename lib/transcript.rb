@@ -1,6 +1,5 @@
 class Transcript
-  include LinksHelpers
-  include TranscriptsHelpers
+  include Helpers
 
   def run
     set_transcripts_links
@@ -16,9 +15,7 @@ class Transcript
 
   def save_transcripts_files
     @links.each do |url|
-      filepath = "#{TRANSCRIPTS_FOLDER}/#{parse_title(url)}.txt"
-      next if File.exist?(filepath) && !File.zero?(filepath)
-      save_transcript_to_file(filepath, url)
+      save_transcript_to_file(url)
     end
   end
 end
