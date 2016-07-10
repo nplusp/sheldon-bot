@@ -3,12 +3,16 @@ class Parse
     Dir.glob('./transcripts/*.txt') do |filename|
       next if next_matcher(filename)
       transcript = File.read("#{filename}")
-      mltext = transcript.scan(/^.+$\n^Sheldon:.+$/).join("\n\n")
-      mlfile.puts mltext
-      mlfile.puts "\n"
+      text = mltext(transcript)
+      text.each { |t| mlfile.puts t }
     end
   ensure
     mlfile.close
+  end
+
+  def mltext(transcript)
+    lines = transcript.scan(/^.+$\n^Sheldon:.+$/)
+    lines.map { |line| line.gsub(/.+:/, '').split("\n").map { |l| "\"#{l.lstrip}\""}.join(',') }
   end
 
   def mlfile
